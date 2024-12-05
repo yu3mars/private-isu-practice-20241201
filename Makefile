@@ -6,7 +6,7 @@ include env.sh
 # 問題によって変わる変数
 USER:=isucon
 BIN_NAME:=isu-go
-BUILD_DIR:=/home/isucon/private_isu/webapp/go
+BUILD_DIR:=/home/isucon/private_isu/webapp/golang
 SERVICE_NAME:=isu-go.service
 
 DB_PATH:=/etc/mysql
