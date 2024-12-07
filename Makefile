@@ -21,7 +21,7 @@ DB_SLOW_LOG:=/var/log/mysql/mysql-slow.log
 
 # サーバーの環境構築　ツールのインストール、gitまわりのセットアップ
 .PHONY: setup
-setup: install-tools git-setup
+setup: install-tools git-setup enable-monitoring
 
 # 設定ファイルなどを取得してgit管理下に配置する
 .PHONY: get-conf
@@ -59,7 +59,12 @@ pprof-check:
 # DBに接続する
 .PHONY: access-db
 access-db:
-	mysql -h $(MYSQL_HOST) -P $(MYSQL_PORT) -u $(MYSQL_USER) -p$(MYSQL_PASS) $(MYSQL_DBNAME)
+	mysql -h $(MYSQL_HOST) -P $(MYSQL_PORT) -u $(MYSQL_USER) -p$(MYSQL_PASS) $(MYSQL_DBNAME)0
+
+# モニタリングを停止する
+.PHONY: disable-monitoring
+	sudo systemctl disable netdata
+	sudo systemctl stop netdata
 
 # 主要コマンドの構成要素 ------------------------
 
@@ -74,6 +79,19 @@ install-tools:
 	unzip alp_linux_amd64.zip
 	sudo install alp /usr/local/bin/alp
 	rm alp_linux_amd64.zip alp
+
+	# slpのインストール
+	wget https://github.com/tkuchiki/slp/releases/download/v0.2.1/slp_linux_amd64.tar.gz
+	tar -xvf slp_linux_amd64.tar.gz
+	sudo mv slp /usr/local/bin/slp
+	rm slp_linux_amd64.tar.gz
+
+	# pproteinのインストール
+	wget https://github.com/kaz/pprotein/releases/download/v1.2.4/pprotein_1.2.4_linux_amd64.tar.gz
+	tar -xvf pprotein_1.2.4_linux_amd64.tar.gz
+
+	# netdataのインストール
+	bash <(curl -Ss https://my-netdata.io/kickstart.sh)
 
 .PHONY: git-setup
 git-setup:
@@ -171,3 +189,6 @@ mv-logs:
 .PHONY: watch-service-log
 watch-service-log:
 	sudo journalctl -u $(SERVICE_NAME) -n10 -f
+
+.PHONY: enable-monitoring
+	sudo systemctl enable netdata
