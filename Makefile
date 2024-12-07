@@ -63,11 +63,13 @@ access-db:
 
 # モニタリングを停止する
 .PHONY: disable-monitoring
+disable-monitoring:
 	sudo systemctl disable netdata
 	sudo systemctl stop netdata
 
 # 再起動する
 .PHONY: reboot
+reboot:
 	sudo reboot
 
 # 主要コマンドの構成要素 ------------------------
