@@ -91,7 +91,7 @@ install-tools:
 	tar -xvf pprotein_1.2.4_linux_amd64.tar.gz
 
 	# netdataのインストール
-	bash <(curl -Ss https://my-netdata.io/kickstart.sh)
+	wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh && sh /tmp/netdata-kickstart.sh
 
 .PHONY: git-setup
 git-setup:
