@@ -66,6 +66,10 @@ access-db:
 	sudo systemctl disable netdata
 	sudo systemctl stop netdata
 
+# 再起動する
+.PHONY: reboot
+	sudo reboot
+
 # 主要コマンドの構成要素 ------------------------
 
 .PHONY: install-tools
