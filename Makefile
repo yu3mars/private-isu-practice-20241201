@@ -197,4 +197,5 @@ watch-service-log:
 	sudo journalctl -u $(SERVICE_NAME) -n10 -f
 
 .PHONY: enable-monitoring
+enable-monitoring:
 	sudo systemctl enable netdata
